@@ -10,12 +10,23 @@ public class Program
         MazeGame maze = new MazeGame(25, 35);
         Player player = new Player(maze, 30);
         List<Creeper> creepers = new List<Creeper>();
-        PowerUp powerUp = new PowerUp(maze, 30); // Create one power-up
+        List<PowerUp> powerUps = new List<PowerUp>();
+        Random random = new Random();
+
+        bool creepersVisible = true;
+        int powerUpDuration = 5000; // 5 seconds duration
+        DateTime powerUpCollectedTime = DateTime.MinValue;
 
         // Create 5 random creepers
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 10; i++)
         {
             creepers.Add(new Creeper(maze, 30));
+        }
+
+        // Create frequent power-ups
+        for (int i = 0; i < 30; i++)
+        {
+            powerUps.Add(new PowerUp(maze, 30));
         }
 
         while (!SplashKit.QuitRequested())
@@ -29,30 +40,45 @@ public class Program
             // Handle player input and movement
             player.HandleInput();
 
-            // Render the power-up
-            powerUp.Draw();
-
-            // Check if power-up is collected
-            if (powerUp.IsCollectedByPlayer(player))
+            // Render the power-ups
+            foreach (PowerUp powerUp in powerUps)
             {
-                // If collected, remove all creepers from the game
-                creepers.Clear();
-                Console.WriteLine("Power-up collected! Creepers have disappeared.");
+                powerUp.Draw();
+
+                // Check if power-up is collected
+                if (powerUp.IsCollectedByPlayer(player))
+                {
+                    // If collected, hide all creepers and start the timer
+                    creepersVisible = false;
+                    powerUpCollectedTime = DateTime.Now;
+
+                    // Respawn the power-up in a new location
+                    powerUp.Respawn();
+                }
             }
 
-            // Move and render creepers if they are still active
-            foreach (Creeper creeper in creepers)
+            // Check if the creepers should reappear after the power-up duration
+            if (!creepersVisible && (DateTime.Now - powerUpCollectedTime).TotalMilliseconds > powerUpDuration)
             {
-                creeper.MoveRandomly();
-                creeper.Draw();
+                creepersVisible = true; // Make creepers visible again after timer
+            }
 
-                // Check if any creeper collides with the player
-                if (creeper.IsCollidingWithPlayer(player))
+            // Move and render creepers if they are visible
+            if (creepersVisible)
+            {
+                foreach (Creeper creeper in creepers)
                 {
-                    SplashKit.DrawTextOnWindow(gameWindow, "Game Over! You've been caught!", Color.Red, "Arial", 48, 300, 400);
-                    SplashKit.RefreshScreen(60);
-                    SplashKit.Delay(3000); // Pause to display the message
-                    return; // Exit the game loop
+                    creeper.MoveRandomly();
+                    creeper.Draw();
+
+                    // Check if any creeper collides with the player
+                    if (creeper.IsCollidingWithPlayer(player))
+                    {
+                        SplashKit.DrawTextOnWindow(gameWindow, "Game Over! You've been caught!", Color.Red, "Arial", 48, 300, 400);
+                        SplashKit.RefreshScreen(60);
+                        SplashKit.Delay(3000); // Pause to display the message
+                        return; // Exit the game loop
+                    }
                 }
             }
 

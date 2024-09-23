@@ -14,6 +14,12 @@ public class PowerUp
         this.cellSize = cellSize;
         this.random = new Random();
 
+        Respawn();
+    }
+
+    // Respawn the power-up at a new random location
+    public void Respawn()
+    {
         // Place the power-up randomly in the maze
         do
         {
