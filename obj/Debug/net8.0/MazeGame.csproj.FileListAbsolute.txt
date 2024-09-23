@@ -12,3 +12,4 @@
 /home/omarseyam1729/Desktop/MazeGame/obj/Debug/net8.0/MazeGame.pdb
 /home/omarseyam1729/Desktop/MazeGame/obj/Debug/net8.0/MazeGame.genruntimeconfig.cache
 /home/omarseyam1729/Desktop/MazeGame/obj/Debug/net8.0/ref/MazeGame.dll
+/home/omarseyam1729/Desktop/MazeGame/obj/Debug/net8.0/MazeGame.sourcelink.json

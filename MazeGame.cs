@@ -10,6 +10,10 @@ public class MazeGame
     private (int, int) entry, exit;
     public (int, int) EntryPoint => entry; // Getter for entry point
     public (int, int) ExitPoint => exit;   // Getter for exit point
+    public int[,] MazeGrid => maze; // Expose the maze grid
+    public int Rows => rows; // Expose the number of rows
+    public int Cols => cols; // Expose the number of columns
+
     public bool CanMoveTo(int row, int col)
     {
     return IsInBounds(row, col) && maze[row, col] == 1;

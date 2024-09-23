@@ -5,6 +5,8 @@ public class Player
     private int row, col; // Player's position in the maze
     private int cellSize; // Size of each cell in the maze
     private MazeGame maze;
+    public int Row => row; // Expose the player's row
+    public int Col => col; // Expose the player's column
 
     public Player(MazeGame maze, int cellSize)
     {
