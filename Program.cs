@@ -10,6 +10,7 @@ public class Program
         MazeGame maze = new MazeGame(25, 35);
         Player player = new Player(maze, 30);
         List<Creeper> creepers = new List<Creeper>();
+        PowerUp powerUp = new PowerUp(maze, 30); // Create one power-up
 
         // Create 5 random creepers
         for (int i = 0; i < 5; i++)
@@ -25,7 +26,21 @@ public class Program
             // Render the maze first
             maze.RenderMaze();
 
-            // Move and render creepers
+            // Handle player input and movement
+            player.HandleInput();
+
+            // Render the power-up
+            powerUp.Draw();
+
+            // Check if power-up is collected
+            if (powerUp.IsCollectedByPlayer(player))
+            {
+                // If collected, remove all creepers from the game
+                creepers.Clear();
+                Console.WriteLine("Power-up collected! Creepers have disappeared.");
+            }
+
+            // Move and render creepers if they are still active
             foreach (Creeper creeper in creepers)
             {
                 creeper.MoveRandomly();
@@ -40,9 +55,6 @@ public class Program
                     return; // Exit the game loop
                 }
             }
-
-            // Handle player input and movement
-            player.HandleInput();
 
             // Render the player
             player.Draw();
